@@ -20,8 +20,4 @@ const store = configureStore({
   middleware: [...getDefaultMiddleware<AppStore>()] as const,
 });
 
-type AppStore2 = ReturnType<typeof store.getState>;
-
-type UserData = AppStore2["auth"]["data"];
-
 export default store;

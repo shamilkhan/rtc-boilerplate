@@ -38,28 +38,30 @@ const createGenericSlice = <
             ...initialState
         } as GenericState<T, U>,
         reducers: {
-            retry(state: GenericState<T, U>) {
-                return { ...state, retry: true } as const;
-            },
-            popuplate(state: GenericState<T, U>) {
-                return {
-                    ...state,
-                    error: null,
-                    waiting: false
-                } as const;
-            },
+            retry: (state: GenericState<T, U>) => ({ ...state, retry: true } as const),
+            popuplate: (state: GenericState<T, U>) => ({
+                ...state,
+                error: null,
+                waiting: false
+            } as const
+            ),
             ...reducers
         }
     })
 }
 
 
-// Use wrppaer without extra reducer
-const wrapper = <T, U>(name: string, reducers = {}) => {
+const wrapper = <
+    T,
+    U
+>(
+    name: string,
+    reducers: SliceCaseReducers<GenericState<T, U>>
+) => {
     const slice = createGenericSlice({
         name,
         initialState: {} as Partial<GenericState<T, U>>,
-        reducers
+        reducers: reducers as SliceCaseReducers<GenericState<T, U>>
     });
     return slice;
 }
@@ -75,7 +77,7 @@ type AuthData = {
 
 type AuthError = '500' | '401';
 
-const authSlice = wrapper<AuthData, AuthError>('autorization');
+const authSlice = wrapper<AuthData, AuthError>('autorization', {});
 
 const authReducer = authSlice.reducer;
 
@@ -103,13 +105,16 @@ const customerSlice = createGenericSlice(
         name: 'customer',
         initialState: {} as Partial<GenericState<Customer, CustomerError>>,
         reducers: {
-            reset: (state) => ({ ...state, data: null, error: [{
-                errorId: 2,
-                erorrName: 'Privet'
-            }] })
+            reset: (state) => ({
+                ...state, data: null, error: [{
+                    errorId: 2,
+                    erorrName: 'Privet'
+                }]
+            })
         }
     }
 )
+
 
 const customerResetResult = customerSlice.caseReducers.reset({
     expecting: true,

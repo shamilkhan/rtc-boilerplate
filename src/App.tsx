@@ -1,8 +1,18 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import logo from './logo.svg';
 import './App.css';
+import { 
+  AppStore,
+  AppDispatch
+ } from './store';
 
 function App() {
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const auth = useSelector((state: AppStore) => state.auth.data);
+
   return (
     <div className="App">
       <header className="App-header">
