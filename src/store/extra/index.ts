@@ -40,13 +40,13 @@ const createGenericSlice = <
         } as GenericState<T, U>,
         reducers: {
             retry: (state: GenericState<T, U>) => ({ ...state, retry: true } as const),
-            popuplate: (state: GenericState<T, U>): GenericState<T, U> => ({
+            popuplate: (state: GenericState<T, U>) => ({
                 ...state,
                 error: null,
                 waiting: false,
             } as const
             ),
-            setData: (state: GenericState<T, U>, { payload }: PayloadAction<T>): GenericState<T, U> => ({
+            setData: (state: GenericState<T, U>, { payload }: PayloadAction<T>) => ({
                 ...state,
                 data: payload,
                 error: null,
@@ -88,6 +88,9 @@ const authSlice = wrapper<AuthData, AuthError>('autorization', {});
 
 const authReducer = authSlice.reducer;
 
+/**
+ * @description Здесь выводится "Правильный" тип стора
+ */
 const populateResult = authSlice.caseReducers.popuplate({
     expecting: true,
     retry: false,
@@ -122,7 +125,9 @@ const customerSlice = createGenericSlice(
     }
 )
 
-
+/**
+ * @description Use extra reducer
+ */
 const customerResetResult = customerSlice.caseReducers.reset({
     expecting: true,
     retry: false,

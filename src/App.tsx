@@ -12,6 +12,7 @@ function App() {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  /**@description Get Auth Value */
   const auth = useSelector((state: AppStore) => state.auth.data);
 
   const onRetry = () => dispatch(authSlice.actions.retry());
