@@ -2,6 +2,7 @@ import {
     SliceCaseReducers,
     ValidateSliceCaseReducers,
     createSlice,
+    PayloadAction
 } from '@reduxjs/toolkit';
 
 interface GenericState<T, U> {
@@ -39,12 +40,18 @@ const createGenericSlice = <
         } as GenericState<T, U>,
         reducers: {
             retry: (state: GenericState<T, U>) => ({ ...state, retry: true } as const),
-            popuplate: (state: GenericState<T, U>) => ({
+            popuplate: (state: GenericState<T, U>): GenericState<T, U> => ({
                 ...state,
                 error: null,
-                waiting: false
+                waiting: false,
             } as const
             ),
+            setData: (state: GenericState<T, U>, { payload }: PayloadAction<T>): GenericState<T, U> => ({
+                ...state,
+                data: payload,
+                error: null,
+                waiting: false,
+            } as const),
             ...reducers
         }
     })
@@ -129,8 +136,10 @@ const customerResetResult = customerSlice.caseReducers.reset({
     ],
 });
 
+export const customerReducer = customerSlice.reducer;
 
 export {
     authSlice,
-    authReducer
+    authReducer,
+    customerSlice,
 }

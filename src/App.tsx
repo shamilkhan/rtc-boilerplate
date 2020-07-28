@@ -6,12 +6,17 @@ import {
   AppStore,
   AppDispatch
  } from './store';
+import { authSlice } from './store/extra';
 
 function App() {
 
   const dispatch = useDispatch<AppDispatch>();
 
   const auth = useSelector((state: AppStore) => state.auth.data);
+
+  const onRetry = () => dispatch(authSlice.actions.retry());
+
+  const onTest = () => dispatch({type: 'NOT_EXISTING'});
 
   return (
     <div className="App">
@@ -28,6 +33,9 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={onRetry}>
+          onClick
+        </button>
       </header>
     </div>
   );
