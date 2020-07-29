@@ -10,8 +10,11 @@ import {
   authSlice,
   fetchUserById
 } from './store/extra';
+import { useData } from './store/extra/useData';
 
 function App() {
+
+  const needData = useData('auth');
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -22,8 +25,10 @@ function App() {
 
   const onFetchUserById = () => dispatch(
     fetchUserById(12312)
-    ).then(data => console.log(data.payload)
+  ).then(data => console.log(data.payload)
   );
+
+  console.log(needData);
 
   return (
     <div className="App">

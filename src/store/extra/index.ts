@@ -70,7 +70,7 @@ const createGenericSlice = <
 }
 
 
-const wrapper = <
+export const wrapper = <
     T,
     U
 >(
