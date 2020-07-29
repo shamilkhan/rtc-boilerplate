@@ -16,8 +16,6 @@ export interface GenericState<T, U> {
     error: U | null
 }
 
-// export const fetchUserById = createThunk<AuthData, number>({ endPoint: '/endPoint' });
-
 const createGenericSlice = <
     T,
     U,
