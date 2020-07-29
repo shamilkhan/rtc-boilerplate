@@ -7,12 +7,7 @@ import {
 } from '@reduxjs/toolkit';
 import { createThunk } from './createAsyncThunk';
 
-type AuthData = {
-    access: string;
-    refresh: string
-}
-
-interface GenericState<T, U> {
+export interface GenericState<T, U> {
     expecting: boolean;
     retry: boolean;
     update: boolean;
@@ -21,7 +16,7 @@ interface GenericState<T, U> {
     error: U | null
 }
 
-export const fetchUserById = createThunk<AuthData, number>({endPoint: '/endPoint'});
+// export const fetchUserById = createThunk<AuthData, number>({ endPoint: '/endPoint' });
 
 const createGenericSlice = <
     T,
@@ -65,12 +60,15 @@ const createGenericSlice = <
             } as const),
             ...reducers
         },
-        extraReducers
+        extraReducers: (builder) => {
+            if (typeof extraReducers === 'function') extraReducers(builder);
+        }
     })
 }
 
 
-export const wrapper = <
+//Add More optional params
+const wrapper = <
     T,
     U
 >(
@@ -86,75 +84,7 @@ export const wrapper = <
     return slice;
 }
 
-/**
- * @description Slice of Auths
- */
-
-
-type AuthError = '500' | '401';
-
-const authSlice = wrapper<AuthData, AuthError>('autorization', {});
-
-const authReducer = authSlice.reducer;
-
-/**
- * @description Здесь выводится "Правильный" тип стора
- */
-const populateResult = authSlice.caseReducers.popuplate({
-    expecting: true,
-    retry: false,
-    update: false,
-    waiting: false,
-    data: null,
-    error: null,
-});
-
-type Customer = {
-    id: number;
-    name: string
-}[];
-
-type CustomerError = {
-    erorrName: string,
-    errorId: 1 | 2
-}[]
-
-const customerSlice = createGenericSlice(
-    {
-        name: 'customer',
-        initialState: {} as Partial<GenericState<Customer, CustomerError>>,
-        reducers: {
-            reset: (state) => ({
-                ...state, data: null, error: [{
-                    errorId: 2,
-                    erorrName: 'Privet'
-                }]
-            })
-        },
-        extraReducers: {} as ((builder: ActionReducerMapBuilder<GenericState<Customer, CustomerError>>) => void)
-    }
-)
-
-/**
- * @description Use extra reducer
- */
-const customerResetResult = customerSlice.caseReducers.reset({
-    expecting: true,
-    retry: false,
-    update: false,
-    waiting: false,
-    data: [
-        { id: 1, name: 'test' }
-    ],
-    error: [
-        { errorId: 1, erorrName: 'test' }
-    ],
-});
-
-export const customerReducer = customerSlice.reducer;
-
 export {
-    authSlice,
-    authReducer,
-    customerSlice,
+    wrapper,
+    createGenericSlice
 }

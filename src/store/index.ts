@@ -3,10 +3,8 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
-import {
-  customerReducer,
-} from './extra';
 import { authSlice } from './entities/auth';
+import { customerSlice } from './entities/customers';
 
 export type AppStore = ReturnType<typeof rootReducer>
 
@@ -14,7 +12,7 @@ export type AppDispatch = typeof store.dispatch;
 
 const rootReducer = combineReducers({
   auth: authSlice.reducer,
-  customer: customerReducer
+  customer: customerSlice.reducer
 });
 
 

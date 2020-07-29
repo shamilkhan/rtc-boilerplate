@@ -7,9 +7,8 @@ import {
   AppDispatch
 } from './store';
 import {
-  authSlice,
-  fetchUserById
-} from './store/extra';
+  authSlice
+} from './store/entities/auth';
 import { useData } from './store/extra/useData';
 
 function App() {
@@ -23,12 +22,7 @@ function App() {
 
   const onRetry = () => dispatch(authSlice.actions.retry());
 
-  const onFetchUserById = () => dispatch(
-    fetchUserById(12312)
-  ).then(data => console.log(data.payload)
-  );
-
-  console.log(needData);
+  const onFetchUserById = () => dispatch({type: "TEST_CASE"});
 
   return (
     <div className="App">

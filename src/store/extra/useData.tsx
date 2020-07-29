@@ -4,10 +4,6 @@ import { AppStore } from '../index';
 
 type SliceName = 'auth';
 
-type Props = {
-    sliceName: SliceName
-};
-
 const useData = (sliceName: SliceName) => {
     const { 
         data, 
