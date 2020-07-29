@@ -5,7 +5,6 @@ import {
     PayloadAction,
     ActionReducerMapBuilder
 } from '@reduxjs/toolkit';
-import { createThunk } from './createAsyncThunk';
 
 export interface GenericState<T, U> {
     expecting: boolean;
@@ -15,6 +14,7 @@ export interface GenericState<T, U> {
     data: T | null;
     error: U | null
 }
+
 
 const createGenericSlice = <
     T,
@@ -31,31 +31,24 @@ const createGenericSlice = <
     reducers: ValidateSliceCaseReducers<GenericState<T, U>, Reducers>,
     extraReducers: ((builder: ActionReducerMapBuilder<GenericState<T, U>>) => void)
 }) => {
+
+    const initial: GenericState<T, U> = {
+        expecting: true,
+        retry: false,
+        update: false,
+        waiting: false,
+        data: null,
+        error: null,
+        ...initialState
+    }
+
     return createSlice({
         name,
-        initialState: {
-            expecting: true,
-            retry: false,
-            update: false,
-            waiting: false,
-            data: null,
-            error: null,
-            ...initialState
-        } as GenericState<T, U>,
+        initialState: initial,
         reducers: {
-            retry: (state: GenericState<T, U>) => ({ ...state, retry: true } as const),
-            popuplate: (state: GenericState<T, U>) => ({
-                ...state,
-                error: null,
-                waiting: false,
-            } as const
-            ),
-            setData: (state: GenericState<T, U>, { payload }: PayloadAction<T>) => ({
-                ...state,
-                data: payload,
-                error: null,
-                waiting: false,
-            } as const),
+            retry: (state) => ({ ...state as GenericState<T, U>, retry: true } as const),
+            populate: (state) => ({ ...state as GenericState<T, U>, error: null, waiting: false } as const),
+            setData: (state, { payload }: PayloadAction<T>) => ({ ...state as GenericState<T, U>, data: payload, error: null, waiting: false } as const),
             ...reducers
         },
         extraReducers: (builder) => {
@@ -63,7 +56,6 @@ const createGenericSlice = <
         }
     })
 }
-
 
 //Add More optional params
 const wrapper = <

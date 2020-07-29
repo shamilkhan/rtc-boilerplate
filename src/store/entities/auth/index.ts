@@ -15,13 +15,10 @@ export {
     authSlice
 };
 
-
-//Some kind of tests
-
 /**
  * @description Здесь выводится "Правильный" тип стора
  */
-const populateResult = authSlice.caseReducers.popuplate({
+const populateResult = authSlice.caseReducers.populate({
     expecting: true,
     retry: false,
     update: false,
