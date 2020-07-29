@@ -3,7 +3,7 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
-import { authSlice } from './entities/auth';
+import { slice as authSlice } from './entities/auth';
 import { customerSlice } from './entities/customers';
 
 export type AppStore = ReturnType<typeof rootReducer>

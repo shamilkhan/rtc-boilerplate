@@ -9,19 +9,19 @@ type AuthData = {
 
 type AuthError = '500' | '401';
 
-const authSlice = wrapper<AuthData, AuthError>('autorization', {});
-
-export {
-    authSlice
-};
+export const { 
+    slice, 
+    asyncThunk 
+} = wrapper<AuthData, AuthError>({
+    name: 'autorization',
+    endPoint: '/test'
+});
 
 /**
  * @description Здесь выводится "Правильный" тип стора
  */
-const populateResult = authSlice.caseReducers.populate({
+const populateResult = slice.caseReducers.populate({
     expecting: true,
-    retry: false,
-    update: false,
     waiting: false,
     data: null,
     error: null,

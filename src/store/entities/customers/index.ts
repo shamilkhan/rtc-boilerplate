@@ -6,6 +6,7 @@ import {
     createGenericSlice,
     GenericState
 } from '../../extra';
+import { Reducer } from 'react';
 
 type Customer = {
     id: number;
@@ -13,22 +14,22 @@ type Customer = {
 }[];
 
 type CustomerError = {
-    erorrName: string,
+    rerorName: string,
     errorId: 1 | 2
 }[]
 
 const customerSlice = createGenericSlice(
     {
         name: 'customer',
-        initialState: {} as Partial<GenericState<Customer, CustomerError>>,
         reducers: {
             reset: (state) => ({
                 ...state, data: null, error: [{
                     errorId: 2,
-                    erorrName: 'Privet'
+                    rerorName: 'Privet'
                 }]
             })
         },
+        endPoint: '/another',
         extraReducers: ((builder: ActionReducerMapBuilder<GenericState<Customer, CustomerError>>) => {
             console.log('use it--->', builder);
         })
@@ -40,14 +41,12 @@ const customerSlice = createGenericSlice(
  */
 const customerResetResult = customerSlice.caseReducers.reset({
     expecting: true,
-    retry: false,
-    update: false,
     waiting: false,
     data: [
         { id: 1, name: 'test' }
     ],
     error: [
-        { errorId: 1, erorrName: 'test' }
+        { errorId: 1, rerorName: 'test' }
     ],
 });
 

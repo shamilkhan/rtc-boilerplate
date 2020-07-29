@@ -7,7 +7,6 @@ type SliceName = 'auth';
 const useData = (sliceName: SliceName) => {
     const { 
         data, 
-        retry, 
         expecting, 
     } = useSelector((store: AppStore) => store[sliceName]);
 

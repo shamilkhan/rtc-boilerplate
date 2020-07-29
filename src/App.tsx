@@ -7,7 +7,7 @@ import {
   AppDispatch
 } from './store';
 import {
-  authSlice
+  slice as authSlice
 } from './store/entities/auth';
 import { useData } from './store/extra/useData';
 
@@ -19,8 +19,6 @@ function App() {
 
   /**@description Get Auth Value */
   const auth = useSelector((state: AppStore) => state.auth.data);
-
-  const onRetry = () => dispatch(authSlice.actions.retry());
 
   const onFetchUserById = () => dispatch({type: "TEST_CASE"});
 
@@ -39,9 +37,6 @@ function App() {
         >
           Learn React
         </a>
-        <button onClick={onRetry}>
-          onClick
-        </button>
         <button onClick={onFetchUserById}>
           onFetchUserById
         </button>
