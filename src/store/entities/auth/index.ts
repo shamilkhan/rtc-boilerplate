@@ -20,11 +20,9 @@ export const {
 /**
  * @description Здесь выводится "Правильный" тип стора
  */
-const populateResult = slice.caseReducers.populate({
+const populateResult = slice.caseReducers.wait({
     expecting: true,
     waiting: false,
     data: null,
     error: null,
-});
-
-
+})

@@ -44,8 +44,9 @@ const createGenericSlice = <
         name,
         initialState: initial,
         reducers: {
-            populate: (state) => ({ ...state as GenericState<T, U>, error: null, waiting: false } as const),
-            setData: (state, { payload }: PayloadAction<T>) => ({ ...state as GenericState<T, U>, data: payload, error: null, waiting: false } as const),
+            expect: (state) => ({ ...state as GenericState<T, U>, expecting: true, waiting: false, error: null, data: null } as const),
+            wait: (state) => ({ ...state as GenericState<T, U>, expecting: false, waiting: true } as const),
+            populate: (state, { payload }: PayloadAction<U>) => ({ ...state as GenericState<T, U>, data: null, error: payload, waiting: false } as const),
             ...reducers
         },
         extraReducers: (builder) => {
@@ -86,8 +87,8 @@ const wrapper = <
         populate
     } = slice.actions;
 
-    return { 
-        slice, 
+    return {
+        slice,
         asyncThunk,
         populate
     };
