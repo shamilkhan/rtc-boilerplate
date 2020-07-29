@@ -2,11 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import logo from './logo.svg';
 import './App.css';
-import { 
+import {
   AppStore,
   AppDispatch
- } from './store';
-import { authSlice } from './store/extra';
+} from './store';
+import {
+  authSlice,
+  fetchUserById
+} from './store/extra';
 
 function App() {
 
@@ -17,7 +20,10 @@ function App() {
 
   const onRetry = () => dispatch(authSlice.actions.retry());
 
-  const onTest = () => dispatch({type: 'NOT_EXISTING'});
+  const onFetchUserById = () => dispatch(
+    fetchUserById(12312)
+    ).then(data => console.log(data.payload)
+  );
 
   return (
     <div className="App">
@@ -36,6 +42,9 @@ function App() {
         </a>
         <button onClick={onRetry}>
           onClick
+        </button>
+        <button onClick={onFetchUserById}>
+          onFetchUserById
         </button>
       </header>
     </div>

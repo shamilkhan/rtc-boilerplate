@@ -1,9 +1,11 @@
+//@ts-nocheck
+//@eslint-nocheckl
 import {
     createSlice,
+    createAsyncThunk,
     SliceCaseReducers,
     ValidateSliceCaseReducers,
-    PayloadAction,
-    ActionReducerMapBuilder
+    PayloadAction
 } from '@reduxjs/toolkit';
 import { createThunk } from './createAsyncThunk';
 
@@ -30,13 +32,11 @@ const createGenericSlice = <
 >({
     name = '',
     initialState = {},
-    reducers,
-    extraReducers
+    reducers
 }: {
     name: string
     initialState: Partial<GenericState<T, U>>
-    reducers: ValidateSliceCaseReducers<GenericState<T, U>, Reducers>,
-    extraReducers: ((builder: ActionReducerMapBuilder<GenericState<T, U>>) => void)
+    reducers: ValidateSliceCaseReducers<GenericState<T, U>, Reducers>
 }) => {
     return createSlice({
         name,
@@ -65,7 +65,14 @@ const createGenericSlice = <
             } as const),
             ...reducers
         },
-        extraReducers
+        extraReducers: builder => {
+            builder.addCase(fetchUserById.fulfilled, (state, action) => {
+                console.log(action.payload);
+                return {
+                    ...state,
+                } as GenericState<T, U>;
+            });
+        }
     })
 }
 
@@ -80,8 +87,7 @@ const wrapper = <
     const slice = createGenericSlice({
         name,
         initialState: {} as Partial<GenericState<T, U>>,
-        reducers: reducers as SliceCaseReducers<GenericState<T, U>>,
-        extraReducers: {} as ((builder: ActionReducerMapBuilder<GenericState<T, U>>) => void)
+        reducers: reducers as SliceCaseReducers<GenericState<T, U>>
     });
     return slice;
 }
@@ -130,8 +136,7 @@ const customerSlice = createGenericSlice(
                     erorrName: 'Privet'
                 }]
             })
-        },
-        extraReducers: {} as ((builder: ActionReducerMapBuilder<GenericState<Customer, CustomerError>>) => void)
+        }
     }
 )
 
