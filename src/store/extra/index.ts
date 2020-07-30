@@ -3,56 +3,65 @@ import {
     SliceCaseReducers,
     ValidateSliceCaseReducers,
     PayloadAction,
-    ActionReducerMapBuilder
+    ActionReducerMapBuilder,
+    AsyncThunk
 } from '@reduxjs/toolkit';
 import { createThunk } from './createAsyncThunk';
 
-export interface GenericState<T, U> {
+export interface GenericState<SliceData, SliceError> {
     expecting: boolean;
     waiting: boolean;
-    data: T | null;
-    error: U | null
+    data: SliceData | null;
+    error: SliceError | null
+}
+
+/**
+ * @description Interface for createGenericSlice
+ */
+interface CreateGenericSlice<SliceData, SliceError, ThunkProps, Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>> {
+    name: string,
+    endPoint: string,
+    asyncThunk: AsyncThunk<SliceData, ThunkProps, {}>,
+    initialState?: Partial<GenericState<SliceData, SliceError>>
+    reducers?: ValidateSliceCaseReducers<GenericState<SliceData, SliceError>, Reducers>,
+    extraReducers?: ((builder: ActionReducerMapBuilder<GenericState<SliceData, SliceError>>) => void)
 }
 
 const createGenericSlice = <
-    T,
-    U,
-    Reducers extends SliceCaseReducers<GenericState<T, U>>
+    SliceData,
+    SliceError,
+    ThunkProps,
+    Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>
 >({
     name,
     endPoint,
+    asyncThunk,
     initialState = {},
-    reducers = {} as ValidateSliceCaseReducers<GenericState<T, U>, Reducers>,
+    reducers = {} as ValidateSliceCaseReducers<GenericState<SliceData, SliceError>, Reducers>,
     extraReducers
-}: {
-    name: string,
-    endPoint: string,
-    initialState?: Partial<GenericState<T, U>>
-    reducers?: ValidateSliceCaseReducers<GenericState<T, U>, Reducers>,
-    extraReducers?: ((builder: ActionReducerMapBuilder<GenericState<T, U>>) => void)
-}) => {
+}: CreateGenericSlice<SliceData, SliceError, ThunkProps, Reducers>) => {
 
-    const initial: GenericState<T, U> = {
+    const initial: GenericState<SliceData, SliceError> = {
         expecting: true,
         waiting: false,
         data: null,
         error: null,
         ...initialState
-    }
+    };
 
     return createSlice({
         name,
         initialState: initial,
         reducers: {
-            expect: (state) => ({ ...state as GenericState<T, U>, expecting: true, waiting: false, error: null, data: null } as const),
-            wait: (state) => ({ ...state as GenericState<T, U>, expecting: false, waiting: true } as const),
-            populate: (state, { payload }: PayloadAction<U>) => ({ ...state as GenericState<T, U>, data: null, error: payload, waiting: false } as const),
+            expect: (state) => ({ ...state as GenericState<SliceData, SliceError>, expecting: true, waiting: false, error: null, data: null } as const),
+            wait: (state) => ({ ...state as GenericState<SliceData, SliceError>, expecting: false, waiting: true } as const),
+            populate: (state, { payload }: PayloadAction<SliceError>) => ({ ...state as GenericState<SliceData, SliceError>, data: null, error: payload, waiting: false } as const),
             ...reducers
         },
         extraReducers: (builder) => {
-            const remoteData = createThunk({ endPoint });
-            builder.addCase(remoteData.fulfilled, (state, action) => {
-                const nextState = state as GenericState<T, U>;
+            builder.addCase(asyncThunk.fulfilled, (state, action) => {
+                console.log(asyncThunk);
+                const nextState = state as GenericState<SliceData, SliceError>;
                 return nextState;
             });
             if (typeof extraReducers === 'function') extraReducers(builder);
@@ -60,37 +69,42 @@ const createGenericSlice = <
     })
 }
 
-//Add More optional params
+
+type WrapperProps<T, U, ThunkProps, R extends SliceCaseReducers<GenericState<T, U>>> = Omit<CreateGenericSlice<T, U, ThunkProps, R>, 'asyncThunk'>;
+
 const wrapper = <
-    T,
-    U
+    SliceData,
+    SliceError,
+    ThunkProps,
+    Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>
 >({
     name,
     endPoint,
-    reducers = {},
-}: {
-    name: string,
-    endPoint: string,
-    reducers?: SliceCaseReducers<GenericState<T, U>>
-}) => {
+    initialState = {},
+    reducers = {} as ValidateSliceCaseReducers<GenericState<SliceData, SliceError>, Reducers>,
+    extraReducers
+}: WrapperProps<SliceData, SliceError, ThunkProps, Reducers>) => {
 
-    const asyncThunk = createThunk<T, U>({ endPoint });
+    const asyncThunk = createThunk<SliceData, ThunkProps>({ endPoint });
 
     const slice = createGenericSlice({
         name,
         endPoint,
-        initialState: {} as Partial<GenericState<T, U>>,
-        reducers: reducers as SliceCaseReducers<GenericState<T, U>>,
+        initialState: initialState as Partial<GenericState<SliceData, SliceError>>,
+        reducers: reducers as ValidateSliceCaseReducers<GenericState<SliceData, SliceError>, Reducers>,
+        extraReducers,
+        asyncThunk,
     });
-
-    const {
-        populate
-    } = slice.actions;
+    const { actions } = slice;
+    const { populate, expect, wait } = slice.actions;
 
     return {
         slice,
         asyncThunk,
-        populate
+        actions,
+        populate,
+        expect,
+        wait
     };
 }
 

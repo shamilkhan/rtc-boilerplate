@@ -1,45 +1,46 @@
 import {
-    ActionReducerMapBuilder,
-} from '@reduxjs/toolkit';
-
-import {
-    createGenericSlice,
+    wrapper,
     GenericState
 } from '../../extra';
-import { Reducer } from 'react';
+import { createUseData } from '../../extra/useData';
 
-type Customer = {
+export type Customer = {
     id: number;
     name: string
 }[];
 
-type CustomerError = {
+export type CustomerError = {
     rerorName: string,
     errorId: 1 | 2
 }[]
 
-const customerSlice = createGenericSlice(
+
+//TODO: Вывести здесь тип!
+const reducers = {
+    reset: (state: any) => ({
+        ...state, data: null, error: [{
+            errorId: 2,
+           erName: 'Privet'
+        }]
+    })
+};
+
+
+//TODO: объединить в вызов одной функциии
+const { slice, asyncThunk } = wrapper<Customer, CustomerError, void, typeof reducers>(
     {
         name: 'customer',
-        reducers: {
-            reset: (state) => ({
-                ...state, data: null, error: [{
-                    errorId: 2,
-                    rerorName: 'Privet'
-                }]
-            })
-        },
         endPoint: '/another',
-        extraReducers: ((builder: ActionReducerMapBuilder<GenericState<Customer, CustomerError>>) => {
-            console.log('use it--->', builder);
-        })
+        reducers,
     }
-)
+);
+
+export const useCustomers = createUseData<Customer, CustomerError>({ sliceName: 'customer', asyncThunk })
 
 /**
  * @description Use extra reducer
  */
-const customerResetResult = customerSlice.caseReducers.reset({
+const customerResetResult = slice.caseReducers.reset({
     expecting: true,
     waiting: false,
     data: [
@@ -51,7 +52,7 @@ const customerResetResult = customerSlice.caseReducers.reset({
 });
 
 export {
-    customerSlice
+    slice
 }
 
 

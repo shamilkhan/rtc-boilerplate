@@ -6,21 +6,16 @@ import {
   AppStore,
   AppDispatch
 } from './store';
-import {
-  slice as authSlice
-} from './store/entities/auth';
-import { useData } from './store/extra/useData';
+import { useAuth } from './store/entities/auth';
+import { useCustomers } from './store/entities/customers';
 
 function App() {
 
-  const needData = useData('auth');
-
   const dispatch = useDispatch<AppDispatch>();
 
-  /**@description Get Auth Value */
-  const auth = useSelector((state: AppStore) => state.auth.data);
-
-  const onFetchUserById = () => dispatch({type: "TEST_CASE"});
+  const authData = useAuth();
+  
+  const customer = useCustomers();
 
   return (
     <div className="App">
@@ -37,9 +32,6 @@ function App() {
         >
           Learn React
         </a>
-        <button onClick={onFetchUserById}>
-          onFetchUserById
-        </button>
       </header>
     </div>
   );

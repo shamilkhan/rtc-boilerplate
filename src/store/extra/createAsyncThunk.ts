@@ -1,15 +1,14 @@
 import {
     createAsyncThunk,
 } from '@reduxjs/toolkit';
-import { AppStore, AppDispatch } from '../index';
-
 
 export const createThunk = <T, U>({ endPoint }: { endPoint: string }) => createAsyncThunk<
     T,
-    U
+    U,
+    {}
     // {
-    //     dispatch: AppDispatch
-    //     state: AppStore
+        // dispatch: AppDispatch
+        // state: AppStore
     // }
 >
     (
