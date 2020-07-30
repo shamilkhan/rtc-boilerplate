@@ -18,7 +18,12 @@ export interface GenericState<SliceData, SliceError> {
 /**
  * @description Interface for createGenericSlice
  */
-interface CreateGenericSlice<SliceData, SliceError, ThunkProps, Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>> {
+interface CreateGenericSlice<
+    SliceData, 
+    SliceError, 
+    ThunkProps, 
+    Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>
+> {
     name: string,
     endPoint: string,
     asyncThunk: AsyncThunk<SliceData, ThunkProps, {}>,
@@ -91,7 +96,7 @@ const wrapper = <
         name,
         endPoint,
         initialState: initialState as Partial<GenericState<SliceData, SliceError>>,
-        reducers: reducers as ValidateSliceCaseReducers<GenericState<SliceData, SliceError>, Reducers>,
+        reducers,
         extraReducers,
         asyncThunk,
     });
