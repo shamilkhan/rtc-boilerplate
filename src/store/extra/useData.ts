@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
     AppStore,
     ReducersKeys
@@ -22,9 +23,12 @@ type Props<T, U> = {
 
 const createUseData = <
     //TODO: не выводить типы вручную!
-    SliceData extends AuthData | Customer, 
+    SliceData extends AuthData | Customer,
     SliceError extends AuthError | CustomerError
 >({ sliceName, asyncThunk }: Props<SliceData, SliceError>) => () => {
+    
+    const dispatch = useDispatch();
+
     const {
         data,
         expecting,
@@ -34,7 +38,7 @@ const createUseData = <
 
     useEffect(() => {
         if (expecting && typeof asyncThunk === 'function') {
-            asyncThunk();
+            dispatch(asyncThunk());
         }
     }, [expecting]);
 

@@ -10,6 +10,7 @@ export type AuthData = {
 
 export type AuthError = '500' | '401';
 
+//TODO: Если slice не используется, то вызов 2-х функций заменить на 1
 export const {
     slice,
     asyncThunk

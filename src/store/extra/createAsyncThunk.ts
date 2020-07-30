@@ -2,7 +2,7 @@ import {
     createAsyncThunk,
 } from '@reduxjs/toolkit';
 
-export const createThunk = <T, U>({ endPoint }: { endPoint: string }) => createAsyncThunk<
+export const createThunk = <T, U>({ endPoint, name }: { endPoint: string, name: string }) => createAsyncThunk<
     T,
     U,
     {}
@@ -12,8 +12,9 @@ export const createThunk = <T, U>({ endPoint }: { endPoint: string }) => createA
     // }
 >
     (
-        endPoint,
+        `${name}${endPoint}`,
         async (props: U, thunkAPI) => {
+            console.log('call fn', props, typeof thunkAPI);
             const response = await fetch(endPoint);
             return {} as T;
         }
