@@ -65,7 +65,6 @@ const createGenericSlice = <
         },
         extraReducers: (builder) => {
             builder.addCase(asyncThunk.fulfilled, (state, action) => {
-                console.log(asyncThunk.fulfilled, state, action.payload);
                 const nextState = state as GenericState<SliceData, SliceError>;
                 return nextState;
             });
@@ -73,7 +72,6 @@ const createGenericSlice = <
         }
     })
 }
-
 
 type WrapperProps<T, U, ThunkProps, R extends SliceCaseReducers<GenericState<T, U>>> = Omit<CreateGenericSlice<T, U, ThunkProps, R>, 'asyncThunk'>;
 

@@ -32,7 +32,6 @@ const createUseData = <
     const {
         data,
         expecting,
-        waiting,
         error
     } = useSelector((store: AppStore) => store[sliceName] as GenericState<SliceData, SliceError>);
 

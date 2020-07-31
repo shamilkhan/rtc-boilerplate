@@ -16,19 +16,14 @@ export type CustomerError = {
     errorId: 1 | 2
 }[]
 
-
-const asyncThunk = createThunk<Customer, void>({ endPoint: "/test", name });
+const asyncThunk = createThunk<Customer, void>({ endPoint: "/test", name: 'customer' });
 
 const slice = createGenericSlice({
     name: 'customer',
     endPoint: '/test',
-    initialState: {} as GenericState<Customer, CustomerError>,
+    initialState: {expecting: false} as GenericState<Customer, CustomerError>,
     reducers: {
-        reset: (state) => {
-            state.data = null;
-            return state;
-        },
-        update: (state) => ({
+        resetError: (state) => ({
             ...state, 
             error: null
         })
@@ -41,7 +36,7 @@ export const useCustomers = createUseData<Customer, CustomerError>({ sliceName: 
 /**
  * @description Use extra reducer
  */
-const customerResetResult = slice.caseReducers.reset({
+const customerResetResult = slice.caseReducers.resetError({
     expecting: true,
     waiting: false,
     data: [
@@ -53,7 +48,7 @@ const customerResetResult = slice.caseReducers.reset({
 });
 
 export {
-    slice
+    slice,
 }
 
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import logo from './logo.svg';
 import './App.css';
@@ -8,6 +8,7 @@ import {
 } from './store';
 import { useAuth } from './store/entities/auth';
 import { useCustomers } from './store/entities/customers';
+import {slice as customerSlice } from './store/entities/customers';
 
 function App() {
 
@@ -16,6 +17,11 @@ function App() {
   const authData = useAuth();
   
   const customer = useCustomers();
+
+  const setPopulate = useCallback(() => {
+    console.log(customerSlice.actions.populate);
+    dispatch(customerSlice.actions.expect());
+  }, []);
 
   return (
     <div className="App">
@@ -32,6 +38,9 @@ function App() {
         >
           Learn React
         </a>
+        <button onClick={setPopulate} type='button'>
+          Start load customer
+        </button>
       </header>
     </div>
   );
