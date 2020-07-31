@@ -8,14 +8,14 @@ import {
 } from './store';
 import { useAuth } from './store/entities/auth';
 import { useCustomers } from './store/entities/customers';
-import {slice as customerSlice } from './store/entities/customers';
+import { slice as customerSlice } from './store/entities/customers';
 
 function App() {
 
   const dispatch = useDispatch<AppDispatch>();
 
   const authData = useAuth();
-  
+
   const customer = useCustomers();
 
   const setPopulate = useCallback(() => {
@@ -38,9 +38,14 @@ function App() {
         >
           Learn React
         </a>
-        <button onClick={setPopulate} type='button'>
-          Start load customer
-        </button>
+        <p>
+          {`Customer Value is ${customer.data}`}
+        </p>
+        {!!customer.data || (
+          <button onClick={setPopulate} type='button'>
+            Start load customer
+          </button>
+        )}
       </header>
     </div>
   );

@@ -66,7 +66,12 @@ const createGenericSlice = <
         extraReducers: (builder) => {
             builder.addCase(asyncThunk.fulfilled, (state, action) => {
                 const nextState = state as GenericState<SliceData, SliceError>;
-                return nextState;
+
+                return {
+                    ...nextState,
+                    //@ts-ignore 
+                    data: ["Loaded"] as SliceData
+                };
             });
             if (typeof extraReducers === 'function') extraReducers(builder);
         }
