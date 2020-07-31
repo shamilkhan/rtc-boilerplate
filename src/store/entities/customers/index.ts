@@ -1,8 +1,10 @@
 import {
     wrapper,
-    GenericState
+    GenericState,
+    createGenericSlice
 } from '../../extra';
 import { createUseData } from '../../extra/useData';
+import { createThunk } from '../../extra/createAsyncThunk';
 
 export type Customer = {
     id: number;
@@ -15,25 +17,24 @@ export type CustomerError = {
 }[]
 
 
-//TODO: Вывести здесь тип!
-const reducers = {
-    reset: (state: any) => ({
-        ...state, data: null, error: [{
-            errorId: 2,
-           erName: 'Privet'
-        }]
-    })
-};
+const asyncThunk = createThunk<Customer, void>({ endPoint: "/test", name });
 
-
-//TODO: объединить в вызов одной функциии
-const { slice, asyncThunk } = wrapper<Customer, CustomerError, void, typeof reducers>(
-    {
-        name: 'customer',
-        endPoint: '/another',
-        reducers,
-    }
-);
+const slice = createGenericSlice({
+    name: 'customer',
+    endPoint: '/test',
+    initialState: {} as GenericState<Customer, CustomerError>,
+    reducers: {
+        reset: (state) => {
+            state.data = null;
+            return state;
+        },
+        update: (state) => ({
+            ...state, 
+            error: null
+        })
+    },
+    asyncThunk
+});
 
 export const useCustomers = createUseData<Customer, CustomerError>({ sliceName: 'customer', asyncThunk })
 
