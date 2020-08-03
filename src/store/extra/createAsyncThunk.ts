@@ -16,6 +16,7 @@ export const createThunk = <T, U>({ endPoint, name }: { endPoint: string, name: 
         async (props: U, thunkAPI) => {
             console.log('call fn', props, typeof thunkAPI);
             const response = await fetch(endPoint);
-            return {} as T;
+            //@ts-ignore
+            return ['test'] as T;
         }
     );
