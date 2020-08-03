@@ -1,0 +1,16 @@
+{
+    "auth": {
+        "access": "access",
+        "refresh": "refresh"
+    },
+    "customers": [
+        {
+            "id": 1,
+            "name": "Jone"
+        },
+        {
+            "id": 2,
+            "name": "Sam"
+        }
+    ]
+}

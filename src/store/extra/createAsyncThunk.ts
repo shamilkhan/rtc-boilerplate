@@ -6,16 +6,12 @@ export const createThunk = <T, U>({ endPoint, name }: { endPoint: string, name: 
     T,
     U,
     {}
-    // {
-        // dispatch: AppDispatch
-        // state: AppStore
-    // }
 >
     (
         `${name}${endPoint}`,
         async (props: U, thunkAPI) => {
-            console.log('call fn', props, typeof thunkAPI);
-            const response = await fetch(endPoint);
-            return {} as T;
+            const response = await fetch(`http://localhost:5000/${endPoint}`);
+            const result = await response.json() as T;
+            return result;
         }
     );

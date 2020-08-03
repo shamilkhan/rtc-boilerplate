@@ -19,7 +19,6 @@ function App() {
   const customer = useCustomers();
 
   const setPopulate = useCallback(() => {
-    console.log(customerSlice.actions.populate);
     dispatch(customerSlice.actions.expect());
   }, []);
 
