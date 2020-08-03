@@ -6,10 +6,6 @@ export const createThunk = <T, U>({ endPoint, name }: { endPoint: string, name: 
     T,
     U,
     {}
-    // {
-        // dispatch: AppDispatch
-        // state: AppStore
-    // }
 >
     (
         `${name}${endPoint}`,
