@@ -5,7 +5,7 @@ import {
     AppStore,
     ReducersKeys
 } from '../index';
-import { GenericState } from './index';
+import { GenericState } from './interfaces';
 import {
     AuthData,
     AuthError
@@ -26,7 +26,7 @@ const createUseData = <
     SliceData extends AuthData | Customer,
     SliceError extends AuthError | CustomerError
 >({ sliceName, asyncThunk }: Props<SliceData, SliceError>) => () => {
-    
+
     const dispatch = useDispatch();
 
     const {

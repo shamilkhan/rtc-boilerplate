@@ -14,7 +14,7 @@ export type ReducersKeys = keyof typeof reducers;
 
 const reducers = {
   auth: authSlice.reducer,
-  customer: customerSlice.reducer
+  customers: customerSlice.reducer
 };
 
 const rootReducer = combineReducers(reducers);
