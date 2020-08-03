@@ -1,10 +1,6 @@
-import {
-    wrapper,
-    GenericState,
-    createGenericSlice
-} from '../../extra';
-import { createUseData } from '../../extra/useData';
-import { createThunk } from '../../extra/createAsyncThunk';
+import { GenericState } from '../../remoteData/interfaces';
+import { createRemoteData } from '../../remoteData/createRemoteData';
+import { createUseData } from '../../remoteData/createUseData';
 
 export type Customer = {
     id: number;
@@ -16,22 +12,22 @@ export type CustomerError = {
     errorId: 1 | 2
 }[]
 
-const asyncThunk = createThunk<Customer, void>({ endPoint: "customers", name: 'customers' });
-
-const slice = createGenericSlice({
+export const {
+    slice,
+    asyncThunk
+} = createRemoteData({
     name: 'customers',
     endPoint: 'customers',
-    initialState: {expecting: false} as GenericState<Customer, CustomerError>,
+    initialState: { expecting: false } as GenericState<Customer, CustomerError>,
     reducers: {
         resetError: (state) => ({
-            ...state, 
+            ...state as GenericState<Customer, CustomerError>,
             error: null
         })
     },
-    asyncThunk
 });
 
-export const useCustomers = createUseData<Customer, CustomerError>({ sliceName: 'customers', asyncThunk })
+export const useCustomers = createUseData({ sliceName: 'customers', asyncThunk })
 
 /**
  * @description Use extra reducer
@@ -46,10 +42,6 @@ const customerResetResult = slice.caseReducers.resetError({
         { errorId: 1, rerorName: 'test' }
     ],
 });
-
-export {
-    slice,
-}
 
 
 
