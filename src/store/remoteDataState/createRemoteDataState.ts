@@ -12,7 +12,7 @@ import { createThunk } from './createAsyncThunk';
 /**
  * @description Interface for createGenericSlice
  */
-interface CreateRemoteData<
+interface CreateRemoteDataState<
     SliceData,
     SliceError,
     Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>
@@ -27,7 +27,7 @@ interface CreateRemoteData<
 /**
  * @description Create GenericState with Async Thunk
  */
-export const createRemoteData = <
+export const createRemoteDataState = <
     SliceData,
     SliceError,
     Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>
@@ -37,7 +37,7 @@ export const createRemoteData = <
     initialState = {},
     reducers = {} as ValidateSliceCaseReducers<GenericState<SliceData, SliceError>, Reducers>,
     extraReducers
-}: CreateRemoteData<SliceData, SliceError, Reducers>) => {
+}: CreateRemoteDataState<SliceData, SliceError, Reducers>) => {
 
     const asyncThunk = createThunk<SliceData, void>({ endPoint, name });
 
