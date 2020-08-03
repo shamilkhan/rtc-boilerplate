@@ -1,7 +1,5 @@
-import {
-    wrapper
-} from '../../extra';
-import { createUseData } from '../../extra/useData';
+import { createUseData } from '../../remoteData/createUseData';
+import { createRemoteData } from '../../remoteData/createRemoteData';
 
 export type AuthData = {
     access: string;
@@ -10,24 +8,16 @@ export type AuthData = {
 
 export type AuthError = '500' | '401';
 
-//TODO: Если slice не используется, то вызов 2-х функций заменить на 1
-export const {
-    slice,
-    asyncThunk
-} = wrapper<AuthData, AuthError, void, {}>({
+export const { slice, asyncThunk } = createRemoteData<AuthData, AuthError, {}>({
     name: 'auth',
     endPoint: 'auth'
 });
 
-export const useAuth = createUseData<AuthData, AuthError>({ sliceName: 'auth', asyncThunk });
-
-/**
- * @description Здесь выводится "Правильный" тип стора
- */
+export const useAuth = createUseData({ sliceName: 'auth', asyncThunk });
 
 const populateResult = slice.caseReducers.wait({
     expecting: true,
     waiting: false,
     data: null,
     error: null,
-})
+});

@@ -1,9 +1,6 @@
-import {
-    wrapper,
-    GenericState,
-    createGenericSlice
-} from '../../extra';
-import { createUseData } from '../../extra/useData';
+import { GenericState } from '../../remoteData/interfaces';
+import { createRemoteData } from '../../remoteData/createRemoteData';
+import { createUseData } from '../../remoteData/createUseData';
 
 export type Customer = {
     id: number;
@@ -18,21 +15,19 @@ export type CustomerError = {
 export const {
     slice,
     asyncThunk
-} = wrapper({
+} = createRemoteData({
     name: 'customers',
     endPoint: 'customers',
-    initialState: {expecting: false} as GenericState<Customer, CustomerError>,
+    initialState: { expecting: false } as GenericState<Customer, CustomerError>,
     reducers: {
         resetError: (state) => ({
-            ...state as GenericState<Customer, CustomerError>, 
+            ...state as GenericState<Customer, CustomerError>,
             error: null
         })
     },
 });
 
-
-//@ts-ignore
-export const useCustomers = createUseData<Customer, CustomerError>({ sliceName: 'customers', asyncThunk })
+export const useCustomers = createUseData({ sliceName: 'customers', asyncThunk })
 
 /**
  * @description Use extra reducer
