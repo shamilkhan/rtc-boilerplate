@@ -19,11 +19,11 @@ export interface GenericState<SliceData, SliceError> {
  * @description Interface for createGenericSlice
  */
 interface CreateGenericSlice<
-    SliceData, 
-    SliceError, 
-    ThunkProps, 
+    SliceData,
+    SliceError,
+    ThunkProps,
     Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>
-> {
+    > {
     name: string,
     endPoint: string,
     asyncThunk: AsyncThunk<SliceData, ThunkProps, {}>,
@@ -46,7 +46,9 @@ const createGenericSlice = <
     extraReducers
 }: CreateGenericSlice<SliceData, SliceError, ThunkProps, Reducers>) => {
 
-    const initial: GenericState<SliceData, SliceError> = {
+    type Slice = GenericState<SliceData, SliceError>;
+
+    const initial: Slice = {
         expecting: true,
         waiting: false,
         data: null,
@@ -58,14 +60,14 @@ const createGenericSlice = <
         name,
         initialState: initial,
         reducers: {
-            expect: (state) => ({ ...state as GenericState<SliceData, SliceError>, expecting: true, waiting: false, error: null, data: null } as const),
-            wait: (state) => ({ ...state as GenericState<SliceData, SliceError>, expecting: false, waiting: true } as const),
-            populate: (state, { payload }: PayloadAction<SliceError>) => ({ ...state as GenericState<SliceData, SliceError>, data: null, error: payload, waiting: false } as const),
+            expect: (state) => ({ ...state as Slice, expecting: true, waiting: false, error: null, data: null } as const),
+            wait: (state) => ({ ...state as Slice, expecting: false, waiting: true } as const),
+            populate: (state, { payload }: PayloadAction<SliceError>) => ({ ...state as Slice, data: null, error: payload, waiting: false } as const),
             ...reducers
         },
         extraReducers: (builder) => {
             builder.addCase(asyncThunk.fulfilled, (state, action) => {
-                const nextState = state as GenericState<SliceData, SliceError>;
+                const nextState = state as Slice;
 
                 return {
                     ...nextState,
