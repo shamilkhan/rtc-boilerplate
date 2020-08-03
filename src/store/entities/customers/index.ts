@@ -4,7 +4,6 @@ import {
     createGenericSlice
 } from '../../extra';
 import { createUseData } from '../../extra/useData';
-import { createThunk } from '../../extra/createAsyncThunk';
 
 export type Customer = {
     id: number;
@@ -16,21 +15,23 @@ export type CustomerError = {
     errorId: 1 | 2
 }[]
 
-const asyncThunk = createThunk<Customer, void>({ endPoint: "customers", name: 'customers' });
-
-const slice = createGenericSlice({
+export const {
+    slice,
+    asyncThunk
+} = wrapper({
     name: 'customers',
     endPoint: 'customers',
     initialState: {expecting: false} as GenericState<Customer, CustomerError>,
     reducers: {
         resetError: (state) => ({
-            ...state, 
+            ...state as GenericState<Customer, CustomerError>, 
             error: null
         })
     },
-    asyncThunk
 });
 
+
+//@ts-ignore
 export const useCustomers = createUseData<Customer, CustomerError>({ sliceName: 'customers', asyncThunk })
 
 /**
@@ -46,10 +47,6 @@ const customerResetResult = slice.caseReducers.resetError({
         { errorId: 1, rerorName: 'test' }
     ],
 });
-
-export {
-    slice,
-}
 
 
 

@@ -5,6 +5,7 @@ import {
 export const createThunk = <T, U>({ endPoint, name }: { endPoint: string, name: string }) => createAsyncThunk<
     T,
     U,
+    //TODO: add ts
     {}
 >
     (
