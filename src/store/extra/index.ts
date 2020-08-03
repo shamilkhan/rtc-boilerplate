@@ -25,7 +25,7 @@ interface CreateGenericSlice<
     Reducers extends SliceCaseReducers<GenericState<SliceData, SliceError>>
     > {
     name: string,
-    asyncThunk: AsyncThunk<SliceData, ThunkProps, {}>,
+    asyncThunk: AsyncThunk<SliceData, void, {}>,
     initialState?: Partial<GenericState<SliceData, SliceError>>
     reducers?: ValidateSliceCaseReducers<GenericState<SliceData, SliceError>, Reducers>,
     extraReducers?: ((builder: ActionReducerMapBuilder<GenericState<SliceData, SliceError>>) => void)
@@ -93,7 +93,7 @@ const wrapper = <
     extraReducers
 }: WrapperProps<SliceData, SliceError, ThunkProps, Reducers>) => {
 
-    const asyncThunk = createThunk<SliceData, ThunkProps>({ endPoint, name });
+    const asyncThunk = createThunk<SliceData, void>({ endPoint, name });
 
     const slice = createGenericSlice({
         name,
