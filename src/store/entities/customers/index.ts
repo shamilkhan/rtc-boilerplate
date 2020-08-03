@@ -20,7 +20,6 @@ const asyncThunk = createThunk<Customer, void>({ endPoint: "customers", name: 'c
 
 const slice = createGenericSlice({
     name: 'customers',
-    endPoint: 'customers',
     initialState: {expecting: false} as GenericState<Customer, CustomerError>,
     reducers: {
         resetError: (state) => ({
