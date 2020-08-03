@@ -18,7 +18,7 @@ import { AsyncThunk } from '@reduxjs/toolkit';
 
 type Props<T, U> = {
     sliceName: ReducersKeys,
-    asyncThunk: AsyncThunk<T, void, {}>
+    asyncThunk: AsyncThunk<T, { params?: string }, {}>
 }
 
 const createUseData = <
@@ -37,7 +37,7 @@ const createUseData = <
 
     useEffect(() => {
         if (expecting && typeof asyncThunk === 'function') {
-            dispatch(asyncThunk());
+            dispatch(asyncThunk({}));
         }
     }, [expecting]);
 

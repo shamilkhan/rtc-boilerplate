@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import { slice as authSlice } from './entities/auth';
 import { slice as customerSlice } from './entities/customers';
+import {slice as paginationCollection } from './entities/paginationCollection';
 
 export type AppStore = ReturnType<typeof rootReducer>
 
@@ -14,7 +15,8 @@ export type ReducersKeys = keyof typeof reducers;
 
 const reducers = {
   auth: authSlice.reducer,
-  customers: customerSlice.reducer
+  customers: customerSlice.reducer,
+  paginationCollection: paginationCollection.reducer
 };
 
 const rootReducer = combineReducers(reducers);
