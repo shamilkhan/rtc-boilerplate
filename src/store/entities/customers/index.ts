@@ -16,11 +16,11 @@ export type CustomerError = {
     errorId: 1 | 2
 }[]
 
-const asyncThunk = createThunk<Customer, void>({ endPoint: "/customers", name: 'customers' });
+const asyncThunk = createThunk<Customer, void>({ endPoint: "customers", name: 'customers' });
 
 const slice = createGenericSlice({
     name: 'customers',
-    endPoint: '/customers',
+    endPoint: 'customers',
     initialState: {expecting: false} as GenericState<Customer, CustomerError>,
     reducers: {
         resetError: (state) => ({

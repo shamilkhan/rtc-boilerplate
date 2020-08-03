@@ -16,7 +16,7 @@ export const {
     asyncThunk
 } = wrapper<AuthData, AuthError, void, {}>({
     name: 'auth',
-    endPoint: '/auth'
+    endPoint: 'auth'
 });
 
 export const useAuth = createUseData<AuthData, AuthError>({ sliceName: 'auth', asyncThunk });
