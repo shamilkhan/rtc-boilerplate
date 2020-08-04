@@ -39,7 +39,7 @@ export const createRemoteDataState = <
     extraReducers
 }: CreateRemoteDataState<SliceData, SliceError, Reducers>) => {
 
-    const asyncThunk = createThunk<SliceData, void>({ endPoint, name });
+    const asyncThunk = createThunk<SliceData>({ endPoint, name });
 
     const slice = createGenericSlice({
         name,
