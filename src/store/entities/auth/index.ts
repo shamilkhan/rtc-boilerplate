@@ -1,5 +1,5 @@
-import { createUseData } from '../../remoteData/createUseData';
-import { createRemoteData } from '../../remoteData/createRemoteData';
+import { createUseData } from '../../remoteDataState/createUseData';
+import { createRemoteDataState } from '../../remoteDataState/createRemoteDataState';
 
 export type AuthData = {
     access: string;
@@ -8,7 +8,7 @@ export type AuthData = {
 
 export type AuthError = '500' | '401';
 
-export const { slice, asyncThunk } = createRemoteData<AuthData, AuthError, {}>({
+export const { slice, asyncThunk } = createRemoteDataState<AuthData, AuthError, {}>({
     name: 'auth',
     endPoint: 'auth'
 });

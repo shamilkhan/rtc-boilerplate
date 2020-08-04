@@ -1,6 +1,6 @@
-import { GenericState } from '../../remoteData/interfaces';
-import { createRemoteData } from '../../remoteData/createRemoteData';
-import { createUseData } from '../../remoteData/createUseData';
+import { GenericState } from '../../remoteDataState/interfaces';
+import { createRemoteDataState } from '../../remoteDataState/createRemoteDataState';
+import { createUseData } from '../../remoteDataState/createUseData';
 
 export type Customer = {
     id: number;
@@ -15,7 +15,7 @@ export type CustomerError = {
 export const {
     slice,
     asyncThunk
-} = createRemoteData({
+} = createRemoteDataState({
     name: 'customers',
     endPoint: 'customers',
     initialState: { expecting: false } as GenericState<Customer, CustomerError>,
