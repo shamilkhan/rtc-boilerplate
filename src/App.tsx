@@ -24,8 +24,9 @@ function App() {
   }, []);
 
   const loadNextPage = useCallback(() => {
-    dispatch(asyncThunk({ params: String(1 + (paginationCollection?.page || 0)) }));
-  }, [dispatch]);
+    //@ts-ignore
+    dispatch(asyncThunk({ params: String(1 + (parseInt(paginationCollection?.page || 0))) }));
+  }, [dispatch, paginationCollection]);
 
   return (
     <div className="App">
